@@ -1,4 +1,4 @@
-package com.w2m.cache;
+package com.w2m.config;
 
 import com.google.common.cache.CacheBuilder;
 import org.springframework.cache.Cache;

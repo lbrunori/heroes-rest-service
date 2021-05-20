@@ -1,4 +1,4 @@
-package com.w2m.cache;
+package com.w2m.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.w2m.exception.APIErrorResponse;
