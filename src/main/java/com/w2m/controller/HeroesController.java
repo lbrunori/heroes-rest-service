@@ -1,17 +1,18 @@
 package com.w2m.controller;
 
+import com.w2m.exception.BadRequestException;
 import com.w2m.model.Heroe;
 import com.w2m.service.IHeroesService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-@RestController("/heroes")
+@RestController
+@RequestMapping("/api/heroes")
 public class HeroesController {
 
     private final IHeroesService heroesService;
@@ -31,22 +32,33 @@ public class HeroesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Heroe> getHeroe(@PathVariable("id") String id) {
-        return ResponseEntity.ok(new Heroe());
+    public ResponseEntity<Heroe> getHeroe(@PathVariable("id") long id) {
+        Optional<Heroe> heroeOptional = heroesService.findById(id);
+
+        if (heroeOptional.isEmpty()) {
+            throw new BadRequestException("heroe_not_found", "No heroe found with id: " + id);
+        }
+
+        return ResponseEntity.ok(heroeOptional.get());
     }
 
     @PostMapping
     public ResponseEntity<Heroe> postHeroe(@RequestBody @Valid Heroe heroe) {
-        return ResponseEntity.ok(new Heroe());
+        Heroe newHeroe = heroesService.createNewHeroe(heroe);
+
+        return ResponseEntity.ok(newHeroe);
     }
 
     @PutMapping
-    public ResponseEntity<Heroe> putHeroe(@RequestBody @Valid Heroe heroe) {
-        return ResponseEntity.ok(new Heroe());
+    public ResponseEntity<Heroe> putHeroe(@RequestBody @Valid Heroe heroeParam) {
+        Heroe heroe = heroesService.updateHeroe(heroeParam);
+
+        return ResponseEntity.ok(heroe);
     }
 
-    @DeleteMapping
-    public ResponseEntity deleteHeroe(@RequestBody @Valid String id) {
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteHeroe(@PathVariable("id") long id) {
+        heroesService.deleteHeroe(id);
+        return ResponseEntity.noContent().build();
     }
 }

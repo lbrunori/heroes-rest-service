@@ -11,6 +11,8 @@ public interface IHeroesService {
 
     Optional<Heroe> findById(long id);
 
+    Heroe createNewHeroe(Heroe e);
+
     Heroe updateHeroe(Heroe heroe);
 
     void deleteHeroe(long id);
