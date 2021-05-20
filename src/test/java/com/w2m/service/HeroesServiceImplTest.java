@@ -1,9 +1,14 @@
 package com.w2m.service;
 
+import com.w2m.controller.HeroesController;
 import com.w2m.model.Heroe;
+import com.w2m.repository.HeroesRepositoryTest;
 import com.w2m.repository.IHeroesRepository;
+import com.w2m.service.impl.HeroesServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,13 +23,16 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class HeroesServiceImplTest {
 
-    @Autowired
     private IHeroesService heroesService;
-
-    @MockBean
     private IHeroesRepository repository;
 
     private static final List<Heroe> heroes = new LinkedList<>();
+
+    @BeforeEach
+    public void beforeEach() {
+        repository = Mockito.mock(IHeroesRepository.class);
+        heroesService = new HeroesServiceImpl(repository);
+    }
 
     @BeforeAll
     public static void beforeAll() {

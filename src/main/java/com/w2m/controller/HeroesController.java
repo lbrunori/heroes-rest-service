@@ -29,12 +29,12 @@ public class HeroesController {
     @GetMapping
     @Timed
     @Cacheable(value = "heroes")
-    public ResponseEntity<List<Heroe>> getAllHeroes(
+    public ResponseEntity<HeroesListResponse> getAllHeroes(
             @RequestParam(defaultValue = "", required = false, name = "name") String name) {
 
         List<Heroe> heroes = heroesService.findAll(name);
 
-        return ResponseEntity.ok(heroes);
+        return ResponseEntity.ok(new HeroesListResponse(heroes));
     }
 
     @GetMapping("/{id}")
@@ -77,8 +77,20 @@ public class HeroesController {
     }
 
     private void validateIdParam(long id) {
-        if(id < 0) {
+        if (id < 0) {
             throw new BadRequestException("heroe_id_invalid", "Invalid value for ID property");
+        }
+    }
+
+    static class HeroesListResponse {
+        private List<Heroe> elements;
+
+        public HeroesListResponse(List<Heroe> elements) {
+            this.elements = elements;
+        }
+
+        public List<Heroe> getElements() {
+            return elements;
         }
     }
 }

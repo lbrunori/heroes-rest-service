@@ -2,15 +2,13 @@ package com.w2m.controller;
 
 import com.w2m.model.Heroe;
 import com.w2m.service.IHeroesService;
+import com.w2m.service.impl.HeroesServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -18,14 +16,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
 public class HeroesControllerTest {
 
-    @Autowired
     private HeroesController heroesController;
-
-    @MockBean
     private IHeroesService heroesService;
+
+    @BeforeEach
+    public void beforeEach() {
+        heroesService = Mockito.mock(HeroesServiceImpl.class);
+        heroesController = new HeroesController(heroesService);
+    }
 
     @Test
     public void testHeroesContrllerNotNull() {
@@ -37,10 +37,10 @@ public class HeroesControllerTest {
         Heroe heroMock1 = Mockito.mock(Heroe.class);
         when(heroesService.findAll(anyString())).thenReturn(Arrays.asList(heroMock1, heroMock1));
 
-        ResponseEntity<List<Heroe>> allHeroesResponse = heroesController.getAllHeroes("");
+        ResponseEntity<HeroesController.HeroesListResponse> allHeroesResponse = heroesController.getAllHeroes("");
         verify(heroesService,times(1)).findAll(anyString());
         assertEquals(200, allHeroesResponse.getStatusCodeValue());
-        assertEquals(2, Objects.requireNonNull(allHeroesResponse.getBody()).size());
+        assertEquals(2, Objects.requireNonNull(allHeroesResponse.getBody()).getElements().size());
     }
 
     @Test
