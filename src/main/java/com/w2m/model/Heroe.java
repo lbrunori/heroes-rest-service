@@ -1,6 +1,10 @@
 package com.w2m.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="heroes")
@@ -10,6 +14,8 @@ public class Heroe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "name")
+    @NotNull
+    @Length(min = 1, max = 255)
     private String name;
 
     public Heroe(long id, String name) {
