@@ -6,7 +6,6 @@ import com.w2m.exception.NotFoundException;
 import com.w2m.model.Heroe;
 import com.w2m.service.IHeroesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -54,7 +54,7 @@ public class HeroesServiceImpl implements IHeroesService {
     @Override
     public Optional<Heroe> findById(long id) {
         Heroe heroe = heroesRepository.findById(id);
-        return Optional.of(heroe);
+        return Optional.ofNullable(heroe);
     }
 
     @Override
